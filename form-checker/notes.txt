@@ -1,0 +1,137 @@
+" const errorDisplay = (tag, message, valid) => {
+    const container = document.querySelector('.' + tag + "-container");
+    const span = document.querySelector('.' + tag + "-container > span");
+
+    if (!valid) {
+        container.classList.add('error');
+        span.textContent = message;
+    } else {
+        container.classList.remove('error');
+        span.textContent = message;
+    }
+}; "
+
+
+La fonction errorDisplay prend trois arguments : tag, message, et valid. Elle est responsable de gérer l'affichage des messages d'erreur associés aux différents champs du formulaire en modifiant les classes CSS et le texte à l'intérieur des éléments HTML appropriés.
+
+tag: Il s'agit d'une chaîne de caractères représentant l'identifiant d'un champ du formulaire (par exemple, "pseudo", "email", "password", "confirm").
+
+message: Il s'agit d'une chaîne de caractères qui contient le message d'erreur à afficher sous le champ du formulaire.
+
+valid: Il s'agit d'une valeur booléenne indiquant si le champ est valide ou non.
+
+La fonction commence par sélectionner le conteneur et le span associés au champ en utilisant la classe CSS dérivée de l'argument tag. Elle utilise document.querySelector('.' + tag + "-container") pour sélectionner le conteneur et document.querySelector('.' + tag + "-container > span") pour sélectionner le span à l'intérieur de ce conteneur.
+
+Ensuite, elle examine la validité du champ en fonction de la valeur de valid. Si le champ n'est pas valide (!valid), elle ajoute la classe CSS "error" au conteneur, ce qui généralement applique un style visuel indiquant une erreur. Elle attribue également le message d'erreur à afficher dans le span.
+
+Si le champ est valide (valid est true), elle retire la classe "error" du conteneur (s'il y en a une) et efface le contenu du span. Cela a pour effet de masquer le message d'erreur et de rétablir l'apparence normale du champ.
+
+En résumé, la fonction errorDisplay gère la mise en forme visuelle des champs du formulaire en fonction de leur validité, en ajoutant ou en retirant une classe "error" et en affichant ou masquant le message d'erreur approprié.
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+" 
+    if (
+        !value.match(
+            /^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$/
+            )
+            ) {
+                errorDisplay(
+                    "password", 
+                    "8 caractères minimum exigés, une majuscule, un chiffre et un caractère spécial."
+                );
+                progressBar.classList.add('progressRed');
+                password = null;
+            } else if (value.length < 12) {
+                progressBar.classList.add('progressBlue');
+                errorDisplay("password", "", true)
+                password =  value;
+            } else {
+                progressBar.classList.add("progressGreen");
+                errorDisplay("password", "", true)
+                password = value
+            }
+            if(confirmPass) confirmChecker(confirmPass)
+
+"
+
+Utilise une expression régulière pour s'assurer que le mot de passe satisfait plusieurs critères :
+Au moins une lettre majuscule ((?=.*?[A-Z])).
+Au moins une lettre minuscule ((?=(.*[a-z]){1,})).
+Au moins un chiffre ((?=(.*[\d]){1,})).
+Au moins un caractère spécial ((?=(.*[\W]){1,})).
+Pas d'espace ((?!.*\s)).
+Au moins 8 caractères au total (.{8,}).
+
+Si le mot de passe ne respecte pas les critères, la fonction errorDisplay est appelée pour afficher un message d'erreur spécifique sous le champ "password".
+La classe CSS "progressRed" est ajoutée à la barre de progression pour indiquer une erreur.
+La variable password est définie sur null pour indiquer que le mot de passe n'est pas valide.
+
+Si le mot de passe a une longueur inférieure à 12 caractères, la classe CSS "progressBlue" est ajoutée à la barre de progression pour indiquer un niveau de sécurité moyen.
+La fonction errorDisplay est appelée pour masquer le message d'erreur sous le champ "password" (car true est passé comme troisième argument).
+La variable password est définie sur la valeur actuelle du mot de passe.
+
+Si le mot de passe a une longueur d'au moins 12 caractères, la classe CSS "progressGreen" est ajoutée à la barre de progression pour indiquer un niveau de sécurité élevé.
+La fonction errorDisplay est appelée pour masquer le message d'erreur sous le champ "password".
+La variable password est définie sur la valeur actuelle du mot de passe.
+
+Si la variable confirmPass est définie (c'est-à-dire que l'utilisateur a entré une valeur dans le champ de confirmation du mot de passe), la fonction confirmChecker est appelée pour vérifier si les deux champs de mot de passe correspondent.
+
+
+En résumé, ce bloc de code gère la validation du champ de mot de passe en fonction de critères spécifiques, ajuste la présentation visuelle en conséquence, et vérifie également le champ de confirmation du mot de passe le cas échéant.
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+inputs.forEach((input) => {
+    input.addEventListener("input", (e) => { // On met des écouteurs d'évenements pour avoir des infos chaque fois que l'utilisateur saisit quelque chose dans le champ
+        switch (e.target.id) {
+            case "pseudo":
+                pseudoChecker(e.target.value);
+                break;
+                case "email":
+                    emailChecker(e.target.value);
+                    break;
+                    case "password":
+                    passwordChecker(e.target.value)
+                    break;
+                    case "confirm":
+                        confirmChecker(e.target.value)
+                        break;
+                        default:
+                            null;
+        }
+    });
+});
+
+
+Ce bloc de code utilise une boucle forEach pour ajouter des écouteurs d'événements "input" à chaque champ de texte du formulaire. Ces écouteurs sont déclenchés à chaque fois que l'utilisateur saisit quelque chose dans un champ, fournissant ainsi des informations en temps réel. Voici une description détaillée :
+
+inputs.forEach((input) => { :
+
+Cela commence par une boucle forEach qui parcourt chaque élément de la NodeList inputs.
+
+
+input.addEventListener("input", (e) => { :
+
+Pour chaque champ de texte (input), un écouteur d'événements est ajouté pour l'événement "input", qui se déclenche chaque fois qu'une valeur est saisie dans le champ.
+Le paramètre e représente l'objet Event généré par l'événement "input".
+
+
+switch (e.target.id) { :
+
+Utilise une déclaration switch pour basculer en fonction de l'ID du champ actuel.
+Cas pour chaque champ du formulaire :
+
+case "pseudo": :
+Appelle la fonction pseudoChecker avec la valeur actuelle du champ "pseudo".
+case "email": :
+Appelle la fonction emailChecker avec la valeur actuelle du champ "email".
+case "password": :
+Appelle la fonction passwordChecker avec la valeur actuelle du champ "password".
+case "confirm": :
+Appelle la fonction confirmChecker avec la valeur actuelle du champ "confirm".
+default: null; :
+
+Si l'ID du champ n'est aucun de ceux prévus dans les cases, ne fait rien (null).
+En résumé, ce code ajoute des écouteurs d'événements "input" à chaque champ de texte du formulaire pour suivre en temps réel les saisies de l'utilisateur. En fonction de l'ID du champ, il appelle la fonction de validation appropriée pour mettre à jour l'affichage en conséquence.
